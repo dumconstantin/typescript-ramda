@@ -81,6 +81,11 @@ declare module R {
         all<T>(fn: (a: T) => boolean): (list: T[]) => boolean;
 
         /**
+         * Returns true if all elements are unique, in R.equals terms, otherwise false.
+         */
+        allUniq(list: any[]): boolean;
+
+        /**
          * Returns true if at least one of elements of the list match the predicate, false otherwise.
          */
         any<T>(fn: (a: T) => boolean, list: T[]): boolean;
@@ -148,6 +153,37 @@ declare module R {
          */
         drop<T>(n: number, list: T[]): T[];
         drop<T>(n: number): (list: T[]) => T[];
+
+        /**
+         * Returns a list containing all but the last n elements of the given list.
+         * See also takeLast.
+         */
+        dropLast<T>(n: number, list: T[]): T[];
+        dropLast(n: number, list: string): string;
+        dropLast<T>(n: number): (list: T[]|string) => T[]|string;
+
+        /**
+         * Returns a new list containing all but last then elements of a given list, passing each value from the right to the supplied predicate function, skipping elements while the predicate function returns true. The predicate function is passed one argument: (value)*.
+         * See also takeLastWhile.
+         */
+        dropLastWhile<T>(fn: (a: T) => boolean, list: T[]): T[];
+        dropLastWhile<T>(fn: (a: T) => boolean): (list: T[]) => T[];
+
+        /**
+         * Returns a new list without any consecutively repeating elements. R.equals is used to determine equality.
+         * Dispatches to the dropRepeats method of the first argument, if present.
+         * Acts as a transducer if a transformer is given in list position.
+         * See also transduce.
+         */
+        dropRepeats<T>(list: T[]): T[];
+
+        /**
+         * Returns a new list without any consecutively repeating elements. Equality is determined by applying the supplied predicate two consecutive elements. The first element in a series of equal element is the one being preserved.
+         * Dispatches to the dropRepeatsWith method of the second argument, if present.
+         * Acts as a transducer if a transformer is given in list position.
+         * See also transduce.
+         */
+        dropRepeatsWith<T>(pred: (a: T, b: T) => boolean, list: T[]): T[];
 
         /**
          * Returns a new list containing the last n elements of a given list, passing each value to the supplied
@@ -1517,8 +1553,8 @@ declare module R {
          * The upper case version of a string.
          */
         toUpper(str: string): string;
-        
-        
+
+
         /**
          * Removes (strips) whitespace from both ends of the string.
          */

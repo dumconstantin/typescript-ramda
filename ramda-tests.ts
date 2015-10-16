@@ -102,6 +102,18 @@ class F2 {
 
     var f = R.pipe(Math.pow, R.negate, R.inc);
     var fr: number = f(3, 4); // -(3^4) + 1
+
+    var name = R.pipe(
+        R.split(''),
+        R.map(letter => [letter])
+    )("dave");
+
+    const b = R.pipe(
+        R.prop('name'),
+        R.length
+    )({ name: 'dave' });
+
+    const p = R.map(x => x)(['a','b'])
 }
 
 R.invoker('charAt', String.prototype);
@@ -288,6 +300,12 @@ R.times(i, 5);
 }
 
 () => {
+    R.allUniq(['1', 1]); //=> true
+    R.allUniq([1, 1]);   //=> false
+    R.allUniq([[42], [42]]); //=> false
+}
+
+() => {
     var lessThan0 = R.flip(R.lt)(0);
     var lessThan2 = R.flip(R.lt)(2);
     R.any(lessThan0)([1, 2]); //=> false
@@ -368,6 +386,31 @@ R.times(i, 5);
 () => {
     R.drop(3, [1,2,3,4,5,6,7]); //=> [4,5,6,7]
     R.drop(3)([1,2,3,4,5,6,7]); //=> [4,5,6,7]
+}
+
+() => {
+    R.dropLast(1, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+    R.dropLast(2, ['foo', 'bar', 'baz']); //=> ['foo']
+    R.dropLast(3, ['foo', 'bar', 'baz']); //=> []
+    R.dropLast(4)(['foo', 'bar', 'baz']); //=> []
+    R.dropLast(3, 'ramda');               //=> 'ra'
+    R.dropLast(3)('ramda');               //=> 'ra'
+}
+
+() => {
+    var lteThree = (x: number) => x <= 3;
+    R.dropLastWhile(lteThree, [1, 2, 3, 4, 3, 2, 1]); //=> [1, 2, 3, 4]
+    R.dropLastWhile(lteThree)([1, 2, 3, 4, 3, 2, 1]); //=> [1, 2, 3, 4]
+}
+
+() => {
+    R.dropRepeats([1, 1, 1, 2, 3, 4, 4, 2, 2]); //=> [1, 2, 3, 4, 2]
+}
+
+() => {
+    var lengthEq = (x: number, y: number) => Math.abs(x) === Math.abs(y);
+    var l = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+    R.dropRepeatsWith(R.eqBy(Math.abs), l); //=> [1, 3, 4, -5, 3]
 }
 
 () => {
