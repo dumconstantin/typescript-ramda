@@ -1341,6 +1341,12 @@ class Rectangle {
 }
 
 () => {
+    R.eqBy(Math.abs, 5, -5); //=> true
+    R.eqBy(Math.abs, 5)(-5); //=> true
+    R.eqBy(Math.abs)(5, -5); //=> true
+}
+
+() => {
     R.equals(1, 1); //=> true
     R.equals('2', '1'); //=> false
     R.equals([1, 2, 3], [1, 2, 3]); //=> true
@@ -1351,6 +1357,22 @@ class Rectangle {
 }
 
 () => {
+    R.gt(2, 6); //=> false
+    R.gt(2, 0); //=> true
+    R.gt(2, 2); //=> false
+    R.gt(R.__, 2)(10); //=> true
+    R.gt(2)(10); //=> false
+}
+
+() => {
+    R.gte(2, 6); //=> false
+    R.gte(2, 0); //=> true
+    R.gte(2, 2); //=> false
+    R.gte(R.__, 2)(10); //=> true
+    R.gte(2)(10); //=> false
+}
+
+() => {
     var o = {};
     R.identical(o, o); //=> true
     R.identical(1, 1); //=> true
@@ -1358,6 +1380,23 @@ class Rectangle {
     R.identical([], []); //=> false
     R.identical(0, -0); //=> false
     R.identical(NaN, NaN); //=> true
+}
+
+
+() => {
+    R.lt(2, 6); //=> true
+    R.lt(2, 0); //=> false
+    R.lt(2, 2); //=> false
+    R.lt(5)(10); //=> true
+    R.lt(R.__, 5)(10); //=> false // right-sectioned currying
+}
+
+() => {
+    R.lte(2, 6); //=> true
+    R.lte(2, 0); //=> false
+    R.lte(2, 2); //=> true
+    R.lte(R.__, 2)(1); //=> true
+    R.lte(2)(10); //=> true
 }
 
 () => {
@@ -1408,42 +1447,11 @@ class Rectangle {
 }
 
 () => {
-    R.gt(2, 6); //=> false
-    R.gt(2, 0); //=> true
-    R.gt(2, 2); //=> false
-    R.gt(R.__, 2)(10); //=> true
-    R.gt(2)(10); //=> false
-}
-
-() => {
-    R.gte(2, 6); //=> false
-    R.gte(2, 0); //=> true
-    R.gte(2, 2); //=> false
-    R.gte(R.__, 2)(10); //=> true
-    R.gte(2)(10); //=> false
-}
-
-() => {
     R.isNaN(NaN);        //=> true
     R.isNaN(undefined);  //=> false
     R.isNaN({});         //=> false
 }
 
-() => {
-    R.lt(2, 6); //=> true
-    R.lt(2, 0); //=> false
-    R.lt(2, 2); //=> false
-    R.lt(5)(10); //=> true
-    R.lt(R.__, 5)(10); //=> false // right-sectioned currying
-}
-
-() => {
-    R.lte(2, 6); //=> true
-    R.lte(2, 0); //=> false
-    R.lte(2, 2); //=> true
-    R.lte(R.__, 2)(1); //=> true
-    R.lte(2)(10); //=> true
-}
 
 () => {
     R.mathMod(-17, 5);  //=> 3

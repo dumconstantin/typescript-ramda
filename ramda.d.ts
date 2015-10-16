@@ -21,16 +21,20 @@ declare module R {
         nodeType: number;
     }
 
+    interface Fn1<T, U> {
+        (a: T): U;
+    }
+
     interface Arity0Fn {
         (): any
     }
 
     interface Arity1Fn {
-        (a: any): any
+        (a: any): any;
     }
 
     interface Arity2Fn {
-        (a: any, b: any): any
+        (a: any, b: any): any;
     }
 
     interface ObjFunc {
@@ -925,8 +929,8 @@ declare module R {
         /**
          * ap applies a list of functions to a list of values.
          */
-        ap<T,U>(fns: ((a: T) => U)[], vs: T[]): U[];
-        ap<T,U>(fns: ((a: T) => U)[]): (vs: T[]) => U[];
+        ap<T,U>(fns: Fn1<T,U>[], vs: T[]): U[];
+        ap<T,U>(fns: Fn1<T,U>[]): (vs: T[]) => U[];
 
         /**
          * Applies function fn to the argument list args. This is useful for creating a fixed-arity function from
@@ -1374,20 +1378,6 @@ declare module R {
         divide(a: placeholder, b: number): (b: number) => number;
 
         /**
-         * Returns true if the first parameter is greater than the second.
-         */
-        gt(a: number, b: number): boolean;
-        gt(a: number): (b: number) => boolean;
-        gt(a: placeholder, b: number): (b: number) => boolean;
-
-        /**
-         * Returns true if the first parameter is greater than or equal to the second.
-         */
-        gte(a: number, b: number): boolean;
-        gte(a: number): (b: number) => boolean;
-        gte(a: placeholder, b: number): (b: number) => boolean;
-
-        /**
          * Increments its argument.
          */
         inc(n: number): number;
@@ -1616,11 +1606,11 @@ declare module R {
         differenceWith<T>(pred: (a: T, b: T) => boolean, list1: T[], list2: T[]): T[];
 
         /**
-         * Tests if two items are equal.  Equality is strict here, meaning reference equality for objects and
-         * non-coercing equality for primitives.
+         * Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.
          */
-        eq<T>(a: T, b: T): boolean;
-        eq<T>(a: T): (b: T) => boolean;
+        eqBy<T>(fn: (a: T) =>T, x: T, y: T): boolean;
+        eqBy<T>(fn: (a: T) =>T, x: T): (y: T) => boolean;
+        eqBy<T>(fn: (a: T) =>T): (x: T, y: T) => boolean;
 
         /**
          * Returns true if its arguments are equivalent, false otherwise. Dispatches to an equals method if present.
@@ -1629,6 +1619,19 @@ declare module R {
         equals<T>(a: T, b: T): boolean;
         equals<T>(a: T): (b: T) => boolean;
 
+        /**
+         * Returns true if the first parameter is greater than the second.
+         */
+        gt(a: number, b: number): boolean;
+        gt(a: number): (b: number) => boolean;
+        gt(a: placeholder, b: number): (b: number) => boolean;
+
+        /**
+         * Returns true if the first parameter is greater than or equal to the second.
+         */
+        gte(a: number, b: number): boolean;
+        gte(a: number): (b: number) => boolean;
+        gte(a: placeholder, b: number): (b: number) => boolean;
 
         /**
          * Returns true if its arguments are identical, false otherwise. Values are identical if they reference the
@@ -1637,12 +1640,11 @@ declare module R {
         identical<T>(a: T, b: T): boolean;
         identical<T>(a: T): (b: T) => boolean;
 
-
         /**
          * Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.
          */
         intersection<T>(list1: T[], list2: T[]): T[];
-
+        intersection<T>(list1: T[]): (list2: T[]) => T[];
 
         /**
          * Combines two lists into a set (i.e. no duplicates) composed of those
@@ -1651,6 +1653,22 @@ declare module R {
          * elements.
          */
         intersectionWith<T>(pred: (a: T, b: T) => boolean, list1: T[], list2: T[]): T[];
+        intersectionWith<T>(pred: (a: T, b: T) => boolean, list1: T[]): (list2: T[]) => T[];
+        intersectionWith<T>(pred: (a: T, b: T) => boolean): (list1: T[], list2: T[]) => T[];
+
+        /**
+         * Returns true if the first parameter is less than the second.
+         */
+        lt(a: number, b: number): boolean;
+        lt(a: number): (b: number) => boolean;
+        lt(a: placeholder, b: number): (b: number) => boolean;
+
+        /**
+         * Returns true if the first parameter is less than or equal to the second.
+         */
+        lte(a: number, b: number): boolean;
+        lte(a: number): (b: number) => boolean;
+        lte(a: placeholder, b: number): (b: number) => boolean;
 
         /**
          * Determines whether a nested path on an object has a specific value,
